@@ -2,6 +2,40 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
+const http = require("http");
+
+const MIME = {
+  ".html": "text/html", ".js": "application/javascript",
+  ".css": "text/css", ".json": "application/json",
+  ".png": "image/png", ".jpg": "image/jpeg",
+  ".svg": "image/svg+xml", ".ico": "image/x-icon",
+  ".woff": "font/woff", ".woff2": "font/woff2",
+};
+
+let localPort = null;
+
+function startLocalServer() {
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      let filePath = req.url.split("?")[0];
+      if (filePath === "/") filePath = "/index.html";
+      const fullPath = path.join(__dirname, "build", filePath);
+      try {
+        const data = fs.readFileSync(fullPath);
+        const mime = MIME[path.extname(filePath).toLowerCase()] || "application/octet-stream";
+        res.writeHead(200, { "Content-Type": mime });
+        res.end(data);
+      } catch {
+        res.writeHead(404);
+        res.end("Not Found");
+      }
+    });
+    server.listen(0, "127.0.0.1", () => {
+      localPort = server.address().port;
+      resolve(localPort);
+    });
+  });
+}
 
 let mainWin;
 const getPlaylistPath = () => path.join(app.getPath("userData"), "playlist.json");
@@ -70,7 +104,7 @@ function createWindow() {
     },
   });
   if (app.isPackaged) {
-    mainWin.loadFile(path.join(__dirname, "build", "index.html"));
+    mainWin.loadURL(`http://localhost:${localPort}/`);
   } else {
     mainWin.loadURL("http://localhost:3000");
   }
@@ -113,7 +147,10 @@ ipcMain.handle("set-window-mode", (_, mode) => {
 ipcMain.handle("minimize", () => mainWin?.minimize());
 ipcMain.handle("close", () => mainWin?.close());
 
-app.whenReady().then(createWindow);
+app.whenReady().then(async () => {
+  if (app.isPackaged) await startLocalServer();
+  createWindow();
+});
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
