@@ -103,6 +103,9 @@ function createWindow() {
       webSecurity: false,
     },
   });
+  const ua = mainWin.webContents.getUserAgent().replace(/Electron\/\S+\s?/, '');
+  mainWin.webContents.setUserAgent(ua);
+
   if (app.isPackaged) {
     mainWin.loadURL(`http://localhost:${localPort}/`);
   } else {

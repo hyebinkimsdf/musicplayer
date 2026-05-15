@@ -92,7 +92,7 @@ export default function Player({
       ytRef.current = new window.YT.Player('yt-bg', {
         height: '90',
         width: '160',
-        playerVars: { autoplay: 0, controls: 0, disablekb: 1, rel: 0, modestbranding: 1 },
+        playerVars: { autoplay: 0, controls: 0, disablekb: 1, rel: 0, modestbranding: 1, origin: 'http://localhost' },
         events: {
           onReady: () => {
             ytReadyRef.current = true;
