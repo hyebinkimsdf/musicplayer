@@ -117,5 +117,5 @@ music-player/
 ---
 
 <div align="center">
-  Made with 🎧 by 연구개발전담부
+  Made with 🎧 by 김혜빈
 </div>
