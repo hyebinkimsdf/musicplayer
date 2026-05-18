@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# 🎵 Music Player
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> YouTube URL 하나로 끝내는 데스크탑 뮤직 플레이어  
+> 광고 없음 · 설치 간단 · 감성 충만
 
-## Available Scripts
+<br/>
 
-In the project directory, you can run:
+## ✨ 이런 앱이에요
 
-### `npm start`
+유튜브 링크 붙여넣기 → 재생 끝.  
+복잡한 거 없어요. 그냥 틀면 됩니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+| 기능           | 설명                                             |
+| -------------- | ------------------------------------------------ |
+| 🔗 URL 추가    | YouTube 링크 붙여넣으면 바로 플레이리스트에 추가 |
+| 🎛 듀얼 모드   | 미니(컴팩트) ↔ 풀스크린 전환 가능                |
+| 🔁 반복 재생   | 없음 / 전체 / 한 곡 반복                         |
+| 🖱 드래그 정렬 | 플레이리스트 순서 드래그로 변경                  |
+| 💾 자동 저장   | 껐다 켜도 목록 그대로                            |
+| 🌫 투명도 조절 | 창 투명도 조절로 화면 위에 띄워두기              |
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<br/>
 
-### `npm test`
+## 🖥 미리보기
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+┌──────────────────────────────────────────┐
+│  ● ─ ⛶   Music Player                   │
+├──────────────────────────────────────────┤
+│  [ YouTube URL 붙여넣기          ] [ + ] │
+│                                          │
+│           🖼 앨범 아트                    │
+│                                          │
+│      노래 제목                            │
+│      아티스트                             │
+│                                          │
+│   0:00 ━━━━━━━━━━━━━━━━━━━━━━━  3:45    │
+│                                          │
+│        ↻   ⏮   ▶   ⏭                   │
+│                                          │
+│  ▸ 노래 1   아티스트 · 3:45       ✕     │
+│  ▸ 노래 2   아티스트 · 4:12       ✕     │
+└──────────────────────────────────────────┘
+```
 
-### `npm run build`
+<br/>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 설치 & 실행
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 사전 준비
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [Node.js 18+](https://nodejs.org) 설치 필요
 
-### `npm run eject`
+### 개발 모드로 실행
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+# 클론
+git clone <repo-url>
+cd music-player
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# 패키지 설치
+npm install
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# 실행 (React + Electron 동시)
+npm run dev
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Windows 설치 파일 빌드
 
-## Learn More
+```bash
+npm run dist
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> `dist/` 폴더에 `.exe` 설치 파일이 생성됩니다.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<br/>
 
-### Code Splitting
+## 🛠 기술 스택
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+React 19            — UI
+Electron 41         — 데스크탑 앱 래퍼
+YouTube IFrame API  — 음악 재생
+InnerTube API       — 영상 메타데이터 조회
+electron-builder    — Windows 배포
+```
 
-### Analyzing the Bundle Size
+<br/>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📁 프로젝트 구조
 
-### Making a Progressive Web App
+```
+music-player/
+├── electron.js      # 메인 프로세스 (Electron)
+├── preload.js       # IPC 브릿지
+├── src/
+│   ├── App.js       # 상태 관리
+│   ├── Player.js    # 플레이어 UI
+│   └── App.css      # 스타일
+└── public/
+    └── icon.ico     # 앱 아이콘
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<br/>
 
-### Advanced Configuration
+## 📜 스크립트
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+| 명령어          | 설명                           |
+| --------------- | ------------------------------ |
+| `npm run dev`   | 개발 서버 + Electron 동시 실행 |
+| `npm run build` | React 프로덕션 빌드            |
+| `npm run dist`  | Windows 설치 파일(.exe) 생성   |
+| `npm start`     | React 개발 서버만 실행         |
 
-### Deployment
+<br/>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<div align="center">
+  Made with 🎧 by 연구개발전담부
+</div>
